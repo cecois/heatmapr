@@ -1,0 +1,156 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Heatmapr</title>
+<link rel="icon" href="views/images/favicon.gif" type="image/x-icon"/>
+ <!--[if lt IE 9]>
+ <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+  
+<!--  notice the views prefix on all paths  -->
+<link rel="shortcut icon" href="views/images/favicon.gif" type="image/x-icon"/> 
+<link rel="stylesheet" type="text/css" href="views/css/styles.css"/>
+<link href='http://fonts.googleapis.com/css?family=Cabin+Condensed' rel='stylesheet' type='text/css'>
+<script type="text/javascript" language="Javascript" src="views/lib/jquery-1.7.1.min.js"></script>
+<script type="text/javascript" language="Javascript" src="views/lib/prefixfree.min.js"></script>
+<script type="text/javascript" language="Javascript">
+$(document).ready(function(){
+	/* This code is executed after the DOM has been completely loaded */
+	
+	$('header a').click(function(e){
+										  
+		// If a link has been clicked, scroll the page to the link's hash target:
+		$.scrollTo( this.hash || 0, 500);
+		e.preventDefault();
+	});
+
+});
+</script>
+</head>
+<body>
+   <div class="bg">
+    <!--start container-->
+    <div id="container">
+    <!--start header-->
+    <header>
+      <!--start logo-->
+<!--       <a href="#" id="logo"><img src="views/images/logo.png" width="180" height="43" alt="logo"/></a>     -->
+<div style="float:left;font-size:4.1em;color:#e4df5b;margin-top:12px;">Heatmapr</div>
+      <!--end logo-->
+      <!--start menu-->
+<div style="float:right;"><img src="http://i.minus.com/invNS0.png" alt="" width="" height="" border="0" /> </div>
+<!--  	   <nav>
+  	   
+
+         <ul>
+         <li><a href="#what" class="current">What?</a></li>
+         <li><a href="#how">How?</a></li>
+         </ul>
+
+      </nav>-->
+  	   <!--end menu-->
+      <!--end header-->
+	</header>
+   <!--start intro-->
+   <section id="intro">
+      <hgroup>
+      <h2>A simple API for generating point density heat maps from (somewhat) arbitrary point data.</h2>
+      </hgroup>
+   </section>
+   <!--end intro-->
+   <div style="position:relative;width:100%;text-align:center;margin-bottom:50px;">   <img src="views/images/example_leaflet.png" alt="" width="500px" height="" border="0" /> 
+   </div> 
+
+   <!--start holder-->
+   <div class="holder_content" id="what">
+<section class="group4">
+         <h3>Basically</h3>
+         <article>
+         <p>We took Seth Golub's heatmap.py and messed with it. The result is a RESTish service to which you can pass a few options plus an url-escaped pointer to some GeoJSON stream and get back a point density heatmap. </p><p>We built it for a specific project, so the passable parameters are limited until we have more use cases. As is the output - kml only right now.</p>
+         <p>You can point to it like you would any valid kml, as shown below (noticing please that the surl value has to be properly escaped).</p>
+         <p>Oh, the other thing is that this is brand new and *not* thoroughly tested (what, we have day jobs). If something fails there's virtually no way you can possibly figure out why. So if anything behaves strangely you should Tweet us at @pugolian.</p>
+         </article> 
+       </section>
+	</div>
+	<!--end holder-->
+   <!--start holder-->
+   <div class="holder_content" id="how">
+<!--       <section class="group4"> -->
+         <h3>Fully-formed call:</h3>
+          <div style="font-size:.9em;">http://geo.lib.purdue.edu/heatmapr/api/geojson/1000/viking.kml?surl=http%3A%2F%2Fsome.place.com%2Fwhere%2Fgeojson_is_endpoint.json</div>
+
+          <br /> <br /> 
+          <h3>In which…</h3>  
+          <p>…api/<span class="highlight">geojson</span>
+          <div class="anno"><em>geojson</em> specifies the format of the input (itself signified by <em>surl</em>, see below). Available parameters include: <br/>
+          <ul>
+	<li>geojson</li>
+</ul>
+	…that's it, just the one!		 
+          </div> 
+          </p>
+          
+          
+          <p>…api/geojson/<span class="highlight">1000</span>
+          <div class="anno"><em>1000</em> is a pixel width of the output image (png)	 
+          </div> 
+          </p>
+          
+           
+          <p>…api/geojson/1000/<span class="highlight">viking</span>
+          <div class="anno"><em>viking</em> is the name of the color ramp to use. Valid choices are: <br/>
+          
+          
+          <ul>
+	<li><div style="width:15%;">classic: <img src="views/images/ramp_classic_sample.png" alt="" width="" height="" border="0" /> </div></li>
+	<li><div style="width:15%;">viking: <img src="views/images/ramp_viking_sample.png" alt="" width="" height="" border="0" /> </div></li>
+	
+	<li><div style="width:15%;">sethoscope: <img src="views/images/ramp_sethoscope_sample.png" alt="" width="" height="" border="0" /> </div></li>
+</ul>
+	</div> 
+          </p>           
+          
+           
+          <p>…api/geojson/1000/viking<span class="highlight">.kml</span>
+          <div class="anno"><em>.kml</em> looks like a file extension but is really just a designator of the response format. Valid parameters include: <br/>
+          <ul>
+	<li>kml</li>
+</ul>
+	…that's it, just the one!		 
+          </div> 
+          </p> 
+          
+         <p>…api/geojson/1000/viking.kml<span class="highlight">?surl=</span>
+          <div class="anno"><em>?surl=</em> is your standard key/value form that must be a url-escaped pointer to a valid stream of <strong>point</strong> data matching the format specified by the format param (in our case geojson, as in from GeoServer: <span style="font-size:.8em;">http%3A%2F%2Fgeo.lib.purdue.edu%3A8080%2Fgeoserver%2Fows%3Fservice%3DWFS%26version%3D1.0.0%26request%3DGetFeature%26typeName%3Dpugo%3Aairports%26maxFeatures%3D50%26outputFormat%3Djson</span>)
+          </div> 
+          </p>
+          
+          
+          <h3>Now Google Maps-ified</h3>
+          <div style="font-size:.8em;">var heated = new google.maps.KmlLayer('http://geo.lib.purdue.edu/heatmapr/api/geojson/1000/viking.kml?surl=http%3A%2F%2Fsome.place.com%2Fwhere%2Fgeojson_is_endpoint.json');
+heated.setMap(map);</div>
+
+          <h3>And a couple more notes:</h3>
+          <div>Any geospatial filtering needs to be done at the source end (meaning, ideally, your data source is coming from an API that can handle spatial subletting. For similar reasons, none of this is cached or tiled because any GeoJSON source could change and we can't know about it. If we cached and tiled, the source could update and your heat maps, if cached, wouldn't. We could probably do some stuff on the back end to diff the sources you give, but it would probably slow things down tremendously (don't know, though, tbh).</div>
+                              
+<!--        </section> -->
+   </div>
+   <!--end holder-->
+   </div>
+   <!--end container-->
+   <!--start footer-->
+   <footer>
+      <div class="container">  
+<!--          <div id="FooterTwo"> © 2011 Minimalism </div> -->
+         <div id="FooterTree">Major thanks to <a href="http://sethoscope.net">Seth Golub</a>, the author of the <a href="http://sethoscope.net/heatmap/">original script</a>
+          
+         </div> 
+      </div>
+   </footer>
+   <!--end footer-->
+   </div>
+   <!--end bg-->
+   <!-- Free template distributed by http://freehtml5templates.com -->
+  </body>
+</html>
