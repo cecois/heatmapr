@@ -65,7 +65,7 @@ switch ($formout) {
 $stamp = time();         
 
 // here's our built-up exec statement for heatmap.py
-$heatmapcall = '/usr/local/bin/python2.7 '.$heatmappy.' -j "'.$surl.'" -o '.$outimgpath."/".$stamp.'.png -G /var/www/html/heatmapr/colorscales/'.$theme.'.png -P equirectangular ';
+$heatmapcall = '/usr/local/bin/python2.7 '.$heatmappy.' -j "'.$surl.'" -o '.$outimgpath."/".$stamp.'.png -G /var/www/html/heatmapr/colorscales/'.$theme.'.png -P equirectangular -R 50';
                 
 /*
 if($height){

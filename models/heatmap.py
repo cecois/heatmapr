@@ -24,7 +24,7 @@ from xml import sax
 import psycopg2
 import random
 import re
-# import json
+#import json
 import urllib
 import geojson
 from pprint import pprint
@@ -781,40 +781,8 @@ def main():
     bounding_box_ll = matrix.BoundingBox().Map(projection.InverseProject)
   else:
     bounding_box_ll = BoundingBox(shapes=shapes)
-    lonlat=bounding_box_ll.Extent()
-    llur=lonlat.split(',')
-    bottom=llur[0]
-    left=llur[1]
-    top=llur[2]
-    right=llur[3]
-   
+    bounding_box_xy_padding += options.radius   # Make room for the spread
 
-    #bounding_box_xy_padding += options.radius   # Make room for the spread
-    bounding_box_xy_padding=0
-    #kml = "/var/www/html/heatmap/heatmap.kml"
-    #FILE = open(kml,"w")
-    kmlcontent='<?xml version="1.0" encoding="UTF-8"?><kml xmlns="http://www.opengis.net/kml/2.2">'\
-    '<Folder id="Heatmap">'\
-    '<name>Heatmapr Surface</name>'\
-    '<description>dynamically-generated point density surface</description>'\
-    '<GroundOverlay>'\
-    '<name>Heatmapr Surface</name>'\
-    '<description>dynamically-generated point density surface</description>'\
-    '<color>7fffffff</color>'\
-    '<Icon>'\
-    '<href>'+apihost+publicout+'?dummy='+str(random.random())+'</href>'\
-    '</Icon>'\
-    '<LatLonBox>'\
-    '<north>'+top+'</north>'\
-    '<south>'+bottom+'</south>'\
-    '<east>'+right+'</east>'\
-    '<west>'+left+'</west>'\
-    '</LatLonBox>'\
-    '</GroundOverlay>'\
-    '</Folder>'\
-    '</kml>'
-
-    print kmlcontent	
 
   background_image = None
   if options.background_image:
@@ -873,9 +841,43 @@ def main():
     import cPickle as pickle
     matrix.projection = projection
     pickle.dump(matrix, open(options.save, 'w'), 2)
+  actual_bounding_box_ll = bounding_box_xy.Map(projection.InverseProject)
+  lonlat=actual_bounding_box_ll.Extent()
 
+  llur=lonlat.split(',')
+  bottom=llur[0]
+  left=llur[1]
+  top=llur[2]
+  right=llur[3]
+
+    #bounding_box_xy_padding=0
+    #kml = "/var/www/html/heatmap/heatmap.kml"
+    #FILE = open(kml,"w")
+  kmlcontent='<?xml version="1.0" encoding="UTF-8"?><kml xmlns="http://www.opengis.net/kml/2.2">'\
+  '<Folder id="Heatmap">'\
+  '<name>Heatmapr Surface</name>'\
+  '<description>dynamically-generated point density surface</description>'\
+  '<GroundOverlay>'\
+  '<name>Heatmapr Surface</name>'\
+  '<description>dynamically-generated point density surface</description>'\
+  '<color>7fffffff</color>'\
+  '<Icon>'\
+  '<href>'+apihost+publicout+'?dummy='+str(random.random())+'</href>'\
+  '</Icon>'\
+  '<LatLonBox>'\
+  '<north>'+top+'</north>'\
+  '<south>'+bottom+'</south>'\
+  '<east>'+right+'</east>'\
+  '<west>'+left+'</west>'\
+  '</LatLonBox>'\
+  '</GroundOverlay>'\
+  '</Folder>'\
+  '</kml>'
+
+  print kmlcontent	
   printtime('end')
 
 if __name__ == '__main__':
   main()
+
 
